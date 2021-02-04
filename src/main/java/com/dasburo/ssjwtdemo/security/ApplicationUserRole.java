@@ -34,4 +34,5 @@ public enum ApplicationUserRole {
 
         return permissions;
     }
+    
 }
