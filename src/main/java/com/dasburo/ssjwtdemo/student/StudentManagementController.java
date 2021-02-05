@@ -17,10 +17,10 @@ public class StudentManagementController {
             new Student(3, "Anna Smith")
     );
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMIN_TRAINEE')")
-    public List<Student> readAll() {
-        return STUDENTS;
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('student:write')")
+    public void create(@RequestBody Student student) {
+        System.out.println(student);
     }
 
     @GetMapping(path = "{studentId}")
@@ -34,22 +34,22 @@ public class StudentManagementController {
                 .findFirst().orElse(null);
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyAuthority('student:write')")
-    public void create(@RequestBody Student student) {
-        System.out.println(student);
-    }
-
-    @DeleteMapping(path = "{studentId}")
-    @PreAuthorize("hasAnyAuthority('student:write')")
-    public void delete(@PathVariable("studentId") Integer studentId) {
-        System.out.println(studentId);
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ADMIN_TRAINEE')")
+    public List<Student> readAll() {
+        return STUDENTS;
     }
 
     @PutMapping(path = "{studentId}")
     @PreAuthorize("hasAnyAuthority('student:write')")
     public void update(@PathVariable("studentId") Integer studentId, @RequestBody Student student) {
         System.out.printf("%s %s%n", studentId, student);
+    }
+
+    @DeleteMapping(path = "{studentId}")
+    @PreAuthorize("hasAnyAuthority('student:write')")
+    public void delete(@PathVariable("studentId") Integer studentId) {
+        System.out.println(studentId);
     }
 
 }
